@@ -64,7 +64,8 @@ cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textSc
 # dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
 # [x for x in cursor.sort([('score', {'$meta':'textScore'})])]
 
-# %%
+# %% keywords index关键词索引
+# 关键词索引是强'与'条件(Hard AND)
 dialogs_zh = db['dialogs_zh']
 d1_zh = {
     'text_in': '小孩在那玩玩具',
@@ -80,4 +81,22 @@ dialogs_zh.insert_many([d1_zh,d2_zh])
 dialogs_zh.create_index([('keywords_dialog', pymongo.ASCENDING)])
 keywords_zh = ['小', '孩', '学']
 cursor = dialogs_zh.find({'keywords_dialog': {'$all': keywords_zh}})
+[x for x in cursor]
+
+# %% english模式下的中文全文索引
+dialogs = db['dialogs_zh_fulltext']
+d1 = {
+    'text_in': '小 孩 在 那 玩 玩 具',
+    'text_out': 'find thank you',
+    'keywords_dialog': ['ball', 'toys', 'house'],
+}
+d2 = {
+    'text_in': '小 孩 去 学 校',
+    'text_out': 'i am 9',
+    'keywords_dialog': ['ball', 'toys', 'car'],
+}
+dialogs.insert_many([d1,d2])
+dialogs.create_index([('text_in', TEXT)], default_language='en')
+keywords = '小 孩 学'#['how','old']
+cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
 [x for x in cursor]

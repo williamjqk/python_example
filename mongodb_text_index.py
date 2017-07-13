@@ -1,6 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 from pymongo import TEXT
+import jieba;
 item1 = {
   'name': "Burger",
   'ingredients': [
@@ -21,6 +22,7 @@ item2 = {
 }
 client = MongoClient()
 client.drop_database('recipe')
+client.drop_database('db')
 # 建立或者调用一个名为recipe的database
 db = client['recipe']
 # 建立或调用一个名为posts的collection
@@ -86,17 +88,17 @@ cursor = dialogs_zh.find({'keywords_dialog': {'$all': keywords_zh}})
 # %% english模式下的中文全文索引
 dialogs = db['dialogs_zh_fulltext']
 d1 = {
-    'text_in': '小 孩 在 那 玩 玩 具',
-    'text_out': 'find thank you',
-    'keywords_dialog': ['ball', 'toys', 'house'],
+    'text_in': '你 早上 吃 的 什么 ?',
+    'text_out': '我 吃 的 鸡蛋',
 }
 d2 = {
-    'text_in': '小 孩 去 学 校',
-    'text_out': 'i am 9',
-    'keywords_dialog': ['ball', 'toys', 'car'],
+    'text_in': '你 今天 准备 去 哪 ?',
+    'text_out': '我 要 回家',
 }
 dialogs.insert_many([d1,d2])
 dialogs.create_index([('text_in', TEXT)], default_language='en')
-keywords = '小 孩 学'#['how','old']
+keywords = ' '.join(jieba.lcut('你今天早上去哪了?'))
+print('keywords: {}'.format(keywords))
 cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
-[x for x in cursor]
+for x in cursor.sort([('score', {'$meta':'textScore'})]):
+    print(x)

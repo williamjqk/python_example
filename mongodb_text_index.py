@@ -41,8 +41,6 @@ cursor = foods.find()
 # %%
 # 插入新的一个item
 foods.insert_one(item2).inserted_id
-# foods.create_index([('ingredients', TEXT)], default_language='english')
-# [x for x in foods.find()]
 foods.index_information()
 [x for x in foods.find({'ingredients': 'cheese'})]
 
@@ -60,11 +58,10 @@ d2 = {
 }
 dialogs.insert_many([d1,d2])
 dialogs.create_index([('text_in', TEXT)], default_language='en')
-keywords = 'ball toys'#['how','old']
+keywords = 'ball toys'
 cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
 [x for x in cursor]
-# dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
-# [x for x in cursor.sort([('score', {'$meta':'textScore'})])]
+
 
 # %% keywords index关键词索引
 # 关键词索引是强'与'条件(Hard AND)

@@ -1,15 +1,17 @@
 import pymongo
 from pymongo import MongoClient
 from pymongo import TEXT
-import jieba;
+import jieba # 中文分词工具,下面的例子会用到
+import pprint # pretty print 工具包, 用这个打印格式更整洁
+# 这是两个自定义了两个条目,作为下面程序的用例
 item1 = {
-  'name': "Burger",
-  'ingredients': [
-    "bread",
-    "cheese",
-    "tomato",
-    "beef"
-  ]
+    'name': "Burger",
+    'ingredients': [
+        "bread",
+        "cheese",
+        "tomato",
+        "beef"
+    ]
 }
 item2 = {
     'name': 'Pizza',
@@ -20,6 +22,7 @@ item2 = {
         'pepper'
     ]
 }
+# 初始化一个client实例
 client = MongoClient()
 client.drop_database('recipe')
 client.drop_database('db')
@@ -27,24 +30,25 @@ client.drop_database('db')
 db = client['recipe']
 # 建立或调用一个名为posts的collection
 foods = db['foods']
-
+# 把item1条目插入到foods
 foods.insert_one(item1).inserted_id
-
+# 列出数据库db下的所用的collection的名称
 db.collection_names(include_system_collections=False)
-
+# 随机找出foods中的一个条目(也就是一个document)
 db.foods.find_one()
 
-# 遍历所有数据
+# 遍历foods钟所有的数据
 cursor = foods.find()
-[x for x in cursor]
+pprint.pprint([x for x in cursor])
 
 # %%
 # 插入新的一个item
 foods.insert_one(item2).inserted_id
 foods.index_information()
-[x for x in foods.find({'ingredients': 'cheese'})]
+pprint.pprint([x for x in foods.find({'ingredients': 'cheese'})])
 
 # %%
+# 英文全文搜索(full text search)用例
 dialogs = db['dialogs']
 d1 = {
     'text_in': 'this ball and this ball are toys in the house',
@@ -60,7 +64,7 @@ dialogs.insert_many([d1,d2])
 dialogs.create_index([('text_in', TEXT)], default_language='en')
 keywords = 'ball toys'
 cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
-[x for x in cursor]
+pprint.pprint([x for x in cursor])
 
 
 # %% keywords index关键词索引
@@ -80,7 +84,7 @@ dialogs_zh.insert_many([d1_zh,d2_zh])
 dialogs_zh.create_index([('keywords_dialog', pymongo.ASCENDING)])
 keywords_zh = ['小', '孩', '学']
 cursor = dialogs_zh.find({'keywords_dialog': {'$all': keywords_zh}})
-[x for x in cursor]
+pprint.pprint([x for x in cursor])
 
 # %% english模式下的中文全文索引
 dialogs = db['dialogs_zh_fulltext']
@@ -98,4 +102,4 @@ keywords = ' '.join(jieba.lcut('你今天早上去哪了?'))
 print('keywords: {}'.format(keywords))
 cursor = dialogs.find({'$text': {'$search':keywords}}, {'score':{'$meta':'textScore'}})
 for x in cursor.sort([('score', {'$meta':'textScore'})]):
-    print(x)
+    pprint.pprint(x)

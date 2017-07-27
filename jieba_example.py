@@ -17,12 +17,15 @@ pseg.lcut('什么是上升通道')
 pseg.lcut('刘德华是谁')
 pseg.lcut('中国的首都城市是北京')
 
-# %%
+# %% 停用词
 import jieba
 import jieba.analyse
 
 jieba.analyse.set_stop_words('stop_words.txt')
-# stop_words.txt
+# stop_words.txt:
+# --------
 # 是
 # 什么
+# 怎么
+# --------
 jieba.analyse.extract_tags('中国的首都城市是北京什么')

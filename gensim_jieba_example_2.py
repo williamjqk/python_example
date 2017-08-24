@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gensim import corpora, models, similarities
-from time import time
+import time
 import jieba
 import json
 import numpy as np
@@ -73,7 +73,9 @@ s_vec2 = sent2sparse_vec('债权变现的有效期',100)
 s_vec1.dot(s_vec2.transpose()).A
 
 # %% 计算局部的tfidf的完整程序
+from gensim import corpora, models, similarities
 import time
+import jieba
 t0 = time.time()
 sent_l=[
     '股票有哪些蓝筹股',
@@ -92,6 +94,9 @@ corpus = raw_corpus
 tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
 corpus_tfidf = tfidf[corpus]
 query = tfidf[dictionary.doc2bow(['债权变现','有效期','是','什么'])]
-index = similarities.Similarity('./index',corpus_tfidf,num_features=400)
+index = similarities.Similarity('./index',corpus_tfidf,num_features=400,norm='l2')
 print(index[query])
 print(f"COST TIME: {time.time()-t0}")
+
+from itertools import chain
+''.join(chain(*[x for x in jieba.lcut('债权变现是什么') if x != '什么']))

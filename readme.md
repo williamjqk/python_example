@@ -9,3 +9,4 @@
 - mongodb_text_index.py: MongoDB的快速使用, 全文搜索的使用.
 - pandas_example.py: pandas的例子groupby、head、rank
 - preparing_numeric_data.py: 使用mtcar数据做例子，展示数据预处理的过程
+- tf17_dropout_morvan.py: 有tensorboard使用，存成2个不同的文件夹

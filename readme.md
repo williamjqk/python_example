@@ -21,7 +21,6 @@
 - nlp/gensim_workflow.py: 一个老外写的计算语言similarity的例子
 - nlp/jieba_example.py: jieba的使用例子，包括带停用词分词、计算语句相似度等
 
-
 ## stackoverflow
 - stackoverflow/...: 回答过的stackoverflow，脚本名就是问题
 

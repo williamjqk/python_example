@@ -5,7 +5,7 @@
 - database/build_mongodb_for_conversation.py: 包括从数据文件批量建立数据库, 和删除数据库
 - database/build_mongodb_from_xlsx.py: 从excel建立mongo数据库，包含pandas.io.json的使用
 - database/mongodb_text_index.py: MongoDB的快速使用, 全文搜索的使用. 使用mongodb自带的全文索引（中文情况不好用）
-- database/neo_test: 测试neo, py2neo的使用
+- database/neo_test: 测试图数据库neo, py2neo的使用
 
 ## data mining, feature engineering, modeling
 - datamining/feature_selection_f_regression_and_R_squared.py: 用f值、r2值选择特征的例子

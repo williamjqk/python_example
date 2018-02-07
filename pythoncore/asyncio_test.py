@@ -95,7 +95,7 @@ import asyncio
 import requests
 import time
 
-
+# 这里用request不能实现异步，需要用aiohttp才行，参考async_await.py
 async def download(url): # 通过async def定义的函数是原生的协程对象
     response = requests.get(url)
     print(response.text)

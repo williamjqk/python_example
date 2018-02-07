@@ -38,6 +38,7 @@
 
 ## 跟python内核、python特有的语法相关的语句
 - apply_async_test.py: 自己相关的线程+异步的例子，涉及到量化5号的用例
+- async_await.py: 有一个简单的print("111111")例子，还有一个async/aiohttp爬网页的例子
 - asyncio_test.py: 网上的一个例子，python3.5+版本的新用法
 - decrator_test.py: 使用修饰器的例子
 - yield_test.py: 测试协程yield

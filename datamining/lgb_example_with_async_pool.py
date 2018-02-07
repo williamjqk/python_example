@@ -8,8 +8,8 @@ from sklearn.metrics import mean_squared_error
 
 # load or create your dataset
 print('Load data...')
-df_train = pd.read_csv('/home/ljc/data/regression.train', header=None, sep='\t')
-df_test = pd.read_csv('/home/ljc/data/regression.test', header=None, sep='\t')
+df_train = pd.read_csv('/home/tom/data/regression.train', header=None, sep='\t')
+df_test = pd.read_csv('/home/tom/data/regression.test', header=None, sep='\t')
 
 y_train = df_train[0].values
 y_test = df_test[0].values

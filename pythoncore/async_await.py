@@ -131,3 +131,26 @@ try:
 finally:
     loop.run_until_complete(loop.shutdown_asyncgens())  # see: https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.AbstractEventLoop.shutdown_asyncgens
     loop.close()
+
+# %% async for queue
+# 参考my_crypto_coin_data_test/binance_trade_v17.py的
+# @property
+#     async def buffered(self):
+
+# %% await future: 后台的future对象可以直接await，也可以直接前台await协程
+import asyncio
+
+async def async_fut():
+    for i in range(3):
+        await asyncio.sleep(1)
+        print(f"{i}")
+    print("fut1 done")
+loop = asyncio.get_event_loop()
+fut1 = asyncio.ensure_future(async_fut(), loop=loop)
+
+async def async_fut2():
+    print("await fut1")
+    await fut1
+    print("fut2 done")
+
+loop.run_until_complete(async_fut2())
